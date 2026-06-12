@@ -14,7 +14,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f4f8;min-heigh
 .header h1{font-size:19px;font-weight:600;color:#1a1a2e}
 .header p{font-size:12px;color:#888;margin-top:3px}
 
-/* upload */
+.upload-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.upbtn{padding:10px;border:1px solid #dde3ea;border-radius:10px;background:#fff;font-size:13px;color:#185FA5;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.upbtn:hover{background:#E6F1FB}
+.upbtn i{font-size:18px}
+#img-camera,#img-gallery{position:absolute;opacity:0;width:0;height:0}
+
 .upload-zone{border:2px dashed #b0c4de;border-radius:12px;background:#fff;min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;margin-bottom:1rem;position:relative;overflow:hidden;cursor:pointer}
 .upload-zone:hover{background:#f0f7ff;border-color:#378ADD}
 .upload-hint{display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
@@ -24,17 +29,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f4f8;min-heigh
 #preview-img{width:100%;max-height:260px;object-fit:contain;display:none}
 .change-btn{position:absolute;bottom:8px;right:8px;background:rgba(24,95,165,0.85);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;display:none}
 
-/* hidden inputs */
-#img-camera{position:absolute;opacity:0;width:0;height:0}
-#img-gallery{position:absolute;opacity:0;width:0;height:0}
-
-/* two upload buttons */
-.upload-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
-.upbtn{padding:10px;border:1px solid #dde3ea;border-radius:10px;background:#fff;font-size:13px;color:#185FA5;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
-.upbtn:hover{background:#E6F1FB}
-.upbtn i{font-size:18px}
-
-/* sections */
 .section{background:#fff;border:1px solid #e8edf2;border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.9rem}
 .section-title{font-size:11px;font-weight:700;color:#185FA5;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.65rem;display:flex;align-items:center;gap:5px}
 .section-title i{font-size:14px}
@@ -50,22 +44,14 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f0f4f8;min-heigh
 .other-row label{font-size:12px;color:#999;white-space:nowrap}
 .other-row input{flex:1;padding:6px 9px;border:1px solid #dde3ea;border-radius:7px;font-size:12.5px;color:#333;background:#fafbfc}
 .other-row input:focus{outline:none;border-color:#378ADD}
-.person-input input{width:100%;padding:9px 11px;border:1px solid #dde3ea;border-radius:8px;font-size:14px;color:#333;background:#fafbfc}
-.person-input input:focus{outline:none;border-color:#378ADD}
 
-/* action buttons */
-.gen-btn{width:100%;padding:13px;background:#185FA5;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.4rem;transition:background .2s}
-.gen-btn:hover{background:#0C447C}
-.gen-btn:disabled{background:#c5d5e8;cursor:not-allowed}
+.name-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 
-.action-row{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:.9rem}
+.action-row{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:.9rem;margin-bottom:.5rem}
 .wa-btn{padding:13px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s}
 .wa-btn:hover{background:#1aab52}
 .dl-btn{padding:13px;background:#0F6E56;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:background .2s}
 .dl-btn:hover{background:#085041}
-
-#result-preview{display:none;width:100%;border-radius:10px;border:1px solid #dde3ea;margin-top:.9rem}
-canvas{display:none}
 </style>
 </head>
 <body>
@@ -76,19 +62,13 @@ canvas{display:none}
     <p>ارفع صورة، اختر البيانات، شارك على واتساب</p>
   </div>
 
-  <!-- image source buttons -->
   <div class="upload-btns">
-    <button class="upbtn" onclick="document.getElementById('img-camera').click()">
-      <i class="ti ti-camera"></i> Open Camera
-    </button>
-    <button class="upbtn" onclick="document.getElementById('img-gallery').click()">
-      <i class="ti ti-photo"></i> From Gallery
-    </button>
+    <button class="upbtn" onclick="document.getElementById('img-camera').click()"><i class="ti ti-camera"></i> Open Camera</button>
+    <button class="upbtn" onclick="document.getElementById('img-gallery').click()"><i class="ti ti-photo"></i> From Gallery</button>
   </div>
   <input type="file" id="img-camera" accept="image/*" capture="environment">
   <input type="file" id="img-gallery" accept="image/*">
 
-  <!-- preview zone -->
   <div class="upload-zone" id="upload-zone" onclick="document.getElementById('img-gallery').click()">
     <div class="upload-hint" id="upload-hint">
       <i class="ti ti-photo-up"></i>
@@ -96,20 +76,23 @@ canvas{display:none}
       <small>اضغط لاختيار من الجهاز</small>
     </div>
     <img id="preview-img" alt="preview">
-    <button class="change-btn" id="change-btn" onclick="event.stopPropagation();document.getElementById('img-gallery').click()">
-      <i class="ti ti-refresh"></i> تغيير
-    </button>
+    <button class="change-btn" id="change-btn" onclick="event.stopPropagation();document.getElementById('img-gallery').click()"><i class="ti ti-refresh"></i> تغيير</button>
   </div>
 
-  <!-- name -->
+  <!-- Name -->
   <div class="section">
     <div class="section-title"><i class="ti ti-user-circle"></i> Name</div>
-    <div class="person-input">
-      <input type="text" id="person-name" placeholder="e.g. Nasir Bahai">
+    <div class="name-grid">
+      <div class="opt" data-group="name" data-val="NASIR KHAN DILWAR KHAN"><div class="chk"><i class="ti ti-check"></i></div>Nasir</div>
+      <div class="opt" data-group="name" data-val="SALEH HASSAN GHANEM SAAD"><div class="chk"><i class="ti ti-check"></i></div>Saleh</div>
+    </div>
+    <div class="other-row">
+      <label>Other:</label>
+      <input type="text" id="name-other" placeholder="...">
     </div>
   </div>
 
-  <!-- project -->
+  <!-- Project -->
   <div class="section">
     <div class="section-title"><i class="ti ti-building"></i> Project</div>
     <div class="options-grid">
@@ -118,36 +101,35 @@ canvas{display:none}
       <div class="opt" data-group="project" data-val="Juma"><div class="chk"><i class="ti ti-check"></i></div>Juma</div>
       <div class="opt" data-group="project" data-val="Ali"><div class="chk"><i class="ti ti-check"></i></div>Ali</div>
       <div class="opt" data-group="project" data-val="Khalifa"><div class="chk"><i class="ti ti-check"></i></div>Khalifa</div>
-      <div class="opt" data-group="project" data-val="Hamad Jouka"><div class="chk"><i class="ti ti-check"></i></div>Hamad Jouka</div>
-      <div class="opt" data-group="project" data-val="Hamad Al Junaid"><div class="chk"><i class="ti ti-check"></i></div>Hamad Al Junaid</div>
-      <div class="opt" data-group="project" data-val="Al Obaidli Khalifa"><div class="chk"><i class="ti ti-check"></i></div>Al Obaidli Khalifa</div>
+      <div class="opt" data-group="project" data-val="Jouka"><div class="chk"><i class="ti ti-check"></i></div>Jouka</div>
+      <div class="opt" data-group="project" data-val="Al Junaid"><div class="chk"><i class="ti ti-check"></i></div>Al Junaid</div>
+      <div class="opt" data-group="project" data-val="Al Obaidli"><div class="chk"><i class="ti ti-check"></i></div>Al Obaidli</div>
       <div class="opt" data-group="project" data-val="Abdulsalam"><div class="chk"><i class="ti ti-check"></i></div>Abdulsalam</div>
       <div class="opt" data-group="project" data-val="Nada"><div class="chk"><i class="ti ti-check"></i></div>Nada</div>
       <div class="opt" data-group="project" data-val="Mohamed Ahmed"><div class="chk"><i class="ti ti-check"></i></div>Mohamed Ahmed</div>
       <div class="opt" data-group="project" data-val="Xu"><div class="chk"><i class="ti ti-check"></i></div>Xu</div>
       <div class="opt" data-group="project" data-val="Abla"><div class="chk"><i class="ti ti-check"></i></div>Abla</div>
-      <div class="opt" data-group="project" data-val="Sabco"><div class="chk"><i class="ti ti-check"></i></div>Sabco</div>
     </div>
     <div class="other-row"><label>Other:</label><input type="text" id="project-other" placeholder="..."></div>
   </div>
 
-  <!-- stage -->
+  <!-- Stage -->
   <div class="section">
     <div class="section-title"><i class="ti ti-layers-subtract"></i> Stage</div>
     <div class="options-grid">
-      <div class="opt" data-group="stage" data-val="Substructure (Excavation + Foundation)"><div class="chk"><i class="ti ti-check"></i></div>Substructure</div>
-      <div class="opt" data-group="stage" data-val="Superstructure (Concrete + Columns + Slabs)"><div class="chk"><i class="ti ti-check"></i></div>Superstructure</div>
+      <div class="opt" data-group="stage" data-val="Substructure (Excavation + Foundation)"><div class="chk"><i class="ti ti-check"></i></div>Substructure (Excavation + Foundation)</div>
+      <div class="opt" data-group="stage" data-val="Superstructure (Concrete + Columns + Slabs)"><div class="chk"><i class="ti ti-check"></i></div>Superstructure (Concrete + Columns + Slabs)</div>
       <div class="opt" data-group="stage" data-val="Blockwork"><div class="chk"><i class="ti ti-check"></i></div>Blockwork</div>
       <div class="opt" data-group="stage" data-val="Plaster"><div class="chk"><i class="ti ti-check"></i></div>Plaster</div>
-      <div class="opt" data-group="stage" data-val="Finishing (Tiles + Paint + Ceiling + Joinery)"><div class="chk"><i class="ti ti-check"></i></div>Finishing</div>
-      <div class="opt" data-group="stage" data-val="MEP (Electrical + Plumbing + HVAC) manhole"><div class="chk"><i class="ti ti-check"></i></div>MEP / manhole</div>
-      <div class="opt" data-group="stage" data-val="External Works (Interlock + Landscape)"><div class="chk"><i class="ti ti-check"></i></div>External Works</div>
-      <div class="opt" data-group="stage" data-val="General waste collecting"><div class="chk"><i class="ti ti-check"></i></div>General waste</div>
+      <div class="opt" data-group="stage" data-val="Finishing (Tiles + Paint + Ceiling + Joinery)"><div class="chk"><i class="ti ti-check"></i></div>Finishing (Tiles + Paint + Ceiling + Joinery)</div>
+      <div class="opt" data-group="stage" data-val="MEP (Electrical + Plumbing + HVAC) manhole"><div class="chk"><i class="ti ti-check"></i></div>MEP (Electrical + Plumbing + HVAC) manhole</div>
+      <div class="opt" data-group="stage" data-val="External Works (Interlock + Landscape)"><div class="chk"><i class="ti ti-check"></i></div>External Works (Interlock + Landscape)</div>
+      <div class="opt" data-group="stage" data-val="General waste collecting"><div class="chk"><i class="ti ti-check"></i></div>General waste collecting</div>
     </div>
     <div class="other-row"><label>Other:</label><input type="text" id="stage-other" placeholder="..."></div>
   </div>
 
-  <!-- type -->
+  <!-- Type -->
   <div class="section">
     <div class="section-title"><i class="ti ti-category"></i> Type</div>
     <div class="options-grid">
@@ -164,7 +146,7 @@ canvas{display:none}
     <div class="other-row"><label>Other:</label><input type="text" id="type-other" placeholder="..."></div>
   </div>
 
-  <!-- payment -->
+  <!-- Payment -->
   <div class="section">
     <div class="section-title"><i class="ti ti-credit-card"></i> Payment Method</div>
     <div class="options-grid">
@@ -178,12 +160,7 @@ canvas{display:none}
     <div class="other-row"><label>Other:</label><input type="text" id="pay-other" placeholder="..."></div>
   </div>
 
-  <button class="gen-btn" id="gen-btn" disabled>
-    <i class="ti ti-photo-check"></i> Generate Report Image
-  </button>
-
-  <img id="result-preview" alt="Report">
-
+  <!-- Action buttons — shown after image selected -->
   <div class="action-row" id="action-row">
     <button class="wa-btn" id="wa-btn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -194,23 +171,27 @@ canvas{display:none}
     </a>
   </div>
 
-  <canvas id="canvas-out"></canvas>
 </div>
 
 <script>
 let imgFile = null;
-let resultDataUrl = null;
-const selections = {project:[],stage:[],type:[],pay:[]};
+let imgObjectUrl = null;
+const selections = {name:[],project:[],stage:[],type:[],pay:[]};
 
 function handleFile(file){
   if(!file) return;
   imgFile = file;
-  const url = URL.createObjectURL(file);
+  if(imgObjectUrl) URL.revokeObjectURL(imgObjectUrl);
+  imgObjectUrl = URL.createObjectURL(file);
   document.getElementById('upload-hint').style.display = 'none';
   const pImg = document.getElementById('preview-img');
-  pImg.src = url; pImg.style.display = 'block';
+  pImg.src = imgObjectUrl;
+  pImg.style.display = 'block';
   document.getElementById('change-btn').style.display = 'block';
-  checkReady();
+  // update download link to original file
+  document.getElementById('dl-link').href = imgObjectUrl;
+  document.getElementById('dl-link').download = file.name || 'sabco_report.jpg';
+  document.getElementById('action-row').style.display = 'grid';
 }
 
 document.getElementById('img-camera').addEventListener('change', function(){ handleFile(this.files[0]); });
@@ -225,104 +206,13 @@ document.querySelectorAll('.opt').forEach(el=>{
   });
 });
 
-function checkReady(){
-  document.getElementById('gen-btn').disabled = !imgFile;
+function getVals(g, id){
+  const o = document.getElementById(id).value.trim();
+  return [...selections[g], ...(o ? ['Other: '+o] : [])];
 }
 
-document.getElementById('gen-btn').addEventListener('click', generateImage);
-
-function wrapText(ctx, text, maxW){
-  const words = text.split(' '), lines = [];
-  let cur = '';
-  words.forEach(w=>{
-    const t = cur ? cur+' '+w : w;
-    if(ctx.measureText(t).width > maxW && cur){ lines.push(cur); cur = w; }
-    else cur = t;
-  });
-  if(cur) lines.push(cur);
-  return lines;
-}
-
-function generateImage(){
-  if(!imgFile) return;
-  const btn = document.getElementById('gen-btn');
-  btn.disabled = true; btn.innerHTML = '<i class="ti ti-loader"></i> Generating...';
-  const reader = new FileReader();
-  reader.onload = e => {
-    const image = new Image();
-    image.onload = () => { drawOutput(image); btn.disabled=false; btn.innerHTML='<i class="ti ti-refresh"></i> Regenerate'; };
-    image.src = e.target.result;
-  };
-  reader.readAsDataURL(imgFile);
-}
-
-function drawOutput(image){
-  const canvas = document.getElementById('canvas-out');
-  const scale = Math.min(1, 1200/image.width);
-  const dW = Math.round(image.width*scale), dH = Math.round(image.height*scale);
-  const panelW = Math.max(dW, 720);
-  const pad = 26, contentW = panelW - pad*2;
-
-  const name = document.getElementById('person-name').value.trim();
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-
-  function getVals(g, id){ const o=document.getElementById(id).value.trim(); return [...selections[g],...(o?['Other: '+o]:[])]; }
-  const proj  = getVals('project','project-other');
-  const stage = getVals('stage','stage-other');
-  const type  = getVals('type','type-other');
-  const pay   = getVals('pay','pay-other');
-
-  const tmp = document.createElement('canvas'); tmp.width=panelW; tmp.height=50;
-  const tc = tmp.getContext('2d');
-  function secH(items){ tc.font='13px system-ui,sans-serif'; const l=wrapText(tc,items.length?items.join(' • '):'—',contentW-16); return 20+10+l.length*22+18; }
-
-  let pH = pad + 42 + 12;
-  pH += secH(proj)+10; pH += secH(stage)+10; pH += secH(type)+10; pH += secH(pay)+pad;
-
-  canvas.width = panelW; canvas.height = dH + pH;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,panelW,canvas.height);
-  ctx.drawImage(image, Math.floor((panelW-dW)/2), 0, dW, dH);
-
-  // header bar
-  ctx.fillStyle='#185FA5'; ctx.fillRect(0,dH,panelW,48);
-  ctx.fillStyle='#fff'; ctx.font='bold 14px system-ui,sans-serif';
-  ctx.fillText('SABCO  •  Field Report', pad, dH+30);
-  if(name){ ctx.fillStyle='#B5D4F4'; ctx.font='bold 13px system-ui,sans-serif'; const nw=ctx.measureText('👷 '+name).width; ctx.fillText('👷 '+name,panelW-pad-nw,dH+30); }
-  ctx.fillStyle='#7fb3e0'; ctx.font='11px system-ui,sans-serif'; ctx.fillText(dateStr,pad,dH+44);
-
-  let y = dH+48+pad;
-  function drawSec(icon,label,items){
-    ctx.font='bold 11px system-ui,sans-serif'; ctx.fillStyle='#185FA5';
-    ctx.fillText(icon+' '+label.toUpperCase(),pad,y); y+=10;
-    ctx.strokeStyle='#e0e8f0'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(panelW-pad,y); ctx.stroke(); y+=14;
-    const joined=items.length?items.join('  •  '):'—';
-    ctx.font='13px system-ui,sans-serif'; ctx.fillStyle='#1a2a3a';
-    wrapText(ctx,joined,contentW-16).forEach(l=>{ ctx.fillText(l,pad+8,y); y+=22; });
-    y+=18;
-  }
-  drawSec('📌','Project',proj);
-  drawSec('🏗','Stage',stage);
-  drawSec('🔖','Type',type);
-  drawSec('💳','Payment Method',pay);
-
-  resultDataUrl = canvas.toDataURL('image/jpeg',0.93);
-  document.getElementById('result-preview').src = resultDataUrl;
-  document.getElementById('result-preview').style.display = 'block';
-  document.getElementById('dl-link').href = resultDataUrl;
-  document.getElementById('action-row').style.display = 'grid';
-  document.getElementById('action-row').scrollIntoView({behavior:'smooth'});
-}
-
-// WhatsApp share
-document.getElementById('wa-btn').addEventListener('click', async function(){
-  if(!resultDataUrl) return;
-  // build text summary
-  const name = document.getElementById('person-name').value.trim();
-  function getVals(g,id){ const o=document.getElementById(id).value.trim(); return [...selections[g],...(o?['Other: '+o]:[])]; }
+function buildText(){
+  const nameVals = getVals('name','name-other');
   const proj  = getVals('project','project-other');
   const stage = getVals('stage','stage-other');
   const type  = getVals('type','type-other');
@@ -330,40 +220,37 @@ document.getElementById('wa-btn').addEventListener('click', async function(){
   const now   = new Date();
   const dateStr = now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
-  const text =
+  return (
     '🏗 *SABCO Field Report*\n'+
     '━━━━━━━━━━━━━━━\n'+
-    (name?'👷 *Name:* '+name+'\n':'')+
+    (nameVals.length ? '👷 *Name:* '+nameVals.join(' / ')+'\n' : '')+
     '📅 *Date:* '+dateStr+'\n'+
     '━━━━━━━━━━━━━━━\n'+
     '📌 *Project:* '+(proj.length?proj.join(', '):'—')+'\n'+
     '🏗 *Stage:* '+(stage.length?stage.join(', '):'—')+'\n'+
     '🔖 *Type:* '+(type.length?type.join(', '):'—')+'\n'+
     '💳 *Payment:* '+(pay.length?pay.join(', '):'—')+'\n'+
-    '━━━━━━━━━━━━━━━';
+    '━━━━━━━━━━━━━━━'
+  );
+}
 
-  // try Web Share API (mobile) with image
+document.getElementById('wa-btn').addEventListener('click', async function(){
+  if(!imgFile) return;
+  const text = buildText();
+
+  // Try Web Share API with original image file
   if(navigator.share && navigator.canShare){
     try{
-      const blob = await (await fetch(resultDataUrl)).blob();
-      const file = new File([blob],'sabco_report.jpg',{type:'image/jpeg'});
-      if(navigator.canShare({files:[file]})){
-        await navigator.share({files:[file], title:'SABCO Field Report', text:text});
+      if(navigator.canShare({files:[imgFile]})){
+        await navigator.share({files:[imgFile], title:'SABCO Field Report', text:text});
         return;
       }
-    } catch(e){ console.log('share error',e); }
+    } catch(e){ console.log('share cancelled or failed', e); return; }
   }
 
-  // fallback: save image then open WhatsApp with text
-  // first trigger download
-  const a = document.createElement('a');
-  a.href = resultDataUrl; a.download = 'sabco_report.jpg'; a.click();
-
-  // then open WhatsApp after short delay
-  setTimeout(()=>{
-    const waUrl = 'https://wa.me/?text='+encodeURIComponent(text+'\n\n📎 _Image saved to your device — please attach it manually_');
-    window.open(waUrl,'_blank');
-  }, 800);
+  // Desktop fallback: open WhatsApp web with text only
+  const waUrl = 'https://wa.me/?text='+encodeURIComponent(text+'\n\n📎 _Please attach the image manually_');
+  window.open(waUrl,'_blank');
 });
 </script>
 </body>
